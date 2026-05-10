@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 
 export async function GET() {
@@ -13,8 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const admin = createAdminClient();
-    const { data: profile } = await admin
+    const { data: profile } = await supabase
       .from("profiles")
       .select("credits")
       .eq("id", user.id)

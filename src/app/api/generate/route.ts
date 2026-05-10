@@ -2,7 +2,6 @@ import { streamText } from "ai";
 import { model } from"@/lib/ai";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/prompts";
 import { createClient } from "@/lib/supabase/server";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -30,9 +29,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const admin = createAdminClient();
-
-    const { data: profile } = await admin
+    const { data: profile } = await supabase
       .from("profiles")
       .select("credits")
       .eq("id", user.id)
@@ -86,7 +83,7 @@ export async function POST(req: Request) {
         }
 
         const jsonMatch = fullText.match(
-          /\{[s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+          /\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
         );
         let parsedResult: Record<string, unknown> | null = null;
 
@@ -110,7 +107,7 @@ export async function POST(req: Request) {
             }
 
             const extractedJson = accumulated.match(
-              /\{[s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+              /\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
             );
             if (extractedJson) {
               try {
@@ -124,7 +121,7 @@ export async function POST(req: Request) {
         const tokensUsed = Math.round(fullText.length / 4);
 
         if (parsedResult) {
-          await admin.from("generations").insert({
+          await supabase.from("generations").insert({
             user_id: user.id,
             product_name: productName,
             features: features,
@@ -139,7 +136,7 @@ export async function POST(req: Request) {
           });
         }
 
-        await admin
+        await supabase
           .from("profiles")
           .update({ credits: profile.credits - 1 })
           .eq("id", user.id);
