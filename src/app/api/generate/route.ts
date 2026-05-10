@@ -59,55 +59,29 @@ export async function POST(req: Request) {
     });
 
     const encoder = new TextEncoder();
-    const decoder = new TextDecoder();
     let fullText = "";
-
     const { readable, writable } = new TransformStream();
     const writer = writable.getWriter();
 
-    const aiResponse = result.toDataStreamResponse();
-    const aiBody = aiResponse.body;
-    if (!aiBody) throw new Error("No response body from AI");
-
-    const reader = aiBody.getReader();
-
+    // Stream plain text directly (no AI SDK protocol wrappers)
     (async () => {
       try {
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          const chunk = decoder.decode(value, { stream: true });
-          fullText += chunk;
-          await writer.write(encoder.encode(chunk));
+        for await (const textChunk of result.textStream) {
+          fullText += textChunk;
+          await writer.write(encoder.encode(textChunk));
         }
 
+        // Extract JSON from the accumulated text
         const jsonMatch = fullText.match(
-          /\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+          /\{[s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
         );
         let parsedResult: Record<string, unknown> | null = null;
-
         if (jsonMatch) {
           try {
             parsedResult = JSON.parse(jsonMatch[0]);
           } catch {
-            const dataLines = fullText
-              .split("\n")
-              .filter((l) => l.startsWith("data: "))
-              .map((l) => l.replace(/^data: /, "").trim())
-              .filter((l) => l && l !== "[DONE]");
-
-            let accumulated = "";
-            for (const line of dataLines) {
-              try {
-                const parsed = JSON.parse(line);
-                const content = parsed.choices?.[0]?.delta?.content || "";
-                accumulated += content;
-              } catch {}
-            }
-
-            const extractedJson = accumulated.match(
-              /\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+            const extractedJson = fullText.match(
+              /\{[\s\S]*"title"[\s\S]*"description"[\s\S]*\}/
             );
             if (extractedJson) {
               try {
@@ -117,6 +91,7 @@ export async function POST(req: Request) {
           }
         }
 
+        // Save to database
         const endTime = Date.now();
         const tokensUsed = Math.round(fullText.length / 4);
 
@@ -136,6 +111,7 @@ export async function POST(req: Request) {
           });
         }
 
+        // Deduct credits
         await supabase
           .from("profiles")
           .update({ credits: profile.credits - 1 })
@@ -149,9 +125,7 @@ export async function POST(req: Request) {
 
     return new Response(readable, {
       headers: {
-        "Content-Type": "text/event-stream",
-        "Cache-Control": "no-cache",
-        Connection: "keep-alive",
+        "Content-Type": "text/plain; charset=utf-8",
       },
     });
   } catch (error) {
