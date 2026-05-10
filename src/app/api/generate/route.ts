@@ -1,7 +1,8 @@
 import { streamText } from "ai";
-import { model } from "@/lib/ai";
+import { model } from"@/lib/ai";
 import { SYSTEM_PROMPT, buildUserPrompt } from "@/lib/prompts";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { NextResponse } from "next/server";
 
 export const maxDuration = 60;
@@ -17,42 +18,25 @@ export async function POST(req: Request) {
       );
     }
 
-    // Authenticate user
     const supabase = await createClient();
     const {
       data: { user },
-      error: authError,
     } = await supabase.auth.getUser();
-
-    if (authError) {
-      console.error("Auth error:", authError);
-    }
 
     if (!user) {
       return NextResponse.json(
-        { error: "Unauthorized — please sign in again" },
+        { error: "Unauthorized - please sign in again" },
         { status: 401 }
       );
     }
 
-    // Check credits
-    const { data: profile, error: profileError } = await supabase
+    const admin = createAdminClient();
+
+    const { data: profile } = await admin
       .from("profiles")
       .select("credits")
       .eq("id", user.id)
       .single();
-
-    if (profileError) {
-      console.error("Profile query error:", profileError);
-      return NextResponse.json(
-        {
-          error:
-            "Could not verify credits — " +
-            (profileError.message || "RLS policy may be blocking access"),
-        },
-        { status: 403 }
-      );
-    }
 
     if (!profile || profile.credits <= 0) {
       return NextResponse.json(
@@ -64,7 +48,6 @@ export async function POST(req: Request) {
     const targetPlatform = platform || "amazon";
     const startTime = Date.now();
 
-    // Stream the AI response
     const result = streamText({
       model,
       system: SYSTEM_PROMPT,
@@ -78,7 +61,6 @@ export async function POST(req: Request) {
       maxTokens: 4096,
     });
 
-    // Create a TransformStream to intercept the full text for saving to DB
     const encoder = new TextEncoder();
     const decoder = new TextDecoder();
     let fullText = "";
@@ -86,14 +68,12 @@ export async function POST(req: Request) {
     const { readable, writable } = new TransformStream();
     const writer = writable.getWriter();
 
-    // Pipe the AI stream through our transform
     const aiResponse = result.toDataStreamResponse();
     const aiBody = aiResponse.body;
     if (!aiBody) throw new Error("No response body from AI");
 
     const reader = aiBody.getReader();
 
-    // Read the AI stream in the background, accumulate text, and forward
     (async () => {
       try {
         while (true) {
@@ -105,8 +85,9 @@ export async function POST(req: Request) {
           await writer.write(encoder.encode(chunk));
         }
 
-        // After streaming completes, extract JSON from fullText
-        const jsonMatch = fullText.match(/\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/);
+        const jsonMatch = fullText.match(
+          /\{[s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+        );
         let parsedResult: Record<string, unknown> | null = null;
 
         if (jsonMatch) {
@@ -129,7 +110,7 @@ export async function POST(req: Request) {
             }
 
             const extractedJson = accumulated.match(
-              /\{[\s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
+              /\{[s\S]*"title"[\s\S]*"keywords"[\s\S]*\}/
             );
             if (extractedJson) {
               try {
@@ -139,12 +120,11 @@ export async function POST(req: Request) {
           }
         }
 
-        // Save to database
         const endTime = Date.now();
         const tokensUsed = Math.round(fullText.length / 4);
 
         if (parsedResult) {
-          await supabase.from("generations").insert({
+          await admin.from("generations").insert({
             user_id: user.id,
             product_name: productName,
             features: features,
@@ -159,8 +139,7 @@ export async function POST(req: Request) {
           });
         }
 
-        // Deduct credits
-        await supabase
+        await admin
           .from("profiles")
           .update({ credits: profile.credits - 1 })
           .eq("id", user.id);
