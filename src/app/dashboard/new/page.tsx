@@ -418,6 +418,93 @@ export default function NewGenerationPage() {
             </div>
           </div>
 
+          {/* Keyword Suggestions (grouped by intent) */}
+          {result.keyword_suggestions && (
+            <div className="rounded-xl border border-[var(--border)] p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h2 className="text-sm font-semibold text-[var(--muted-foreground)]">
+                  Keyword Suggestions
+                </h2>
+                <CopyButton
+                  text={[
+                    ...(result.keyword_suggestions.high_volume || []),
+                    ...(result.keyword_suggestions.long_tail || []),
+                    ...(result.keyword_suggestions.related || []),
+                  ].join(", ")}
+                  label="All keywords"
+                />
+              </div>
+              <div className="space-y-4">
+                {[
+                  { label: "High Volume", key: "high_volume" as const, color: "bg-blue-100 text-blue-700" },
+                  { label: "Long Tail", key: "long_tail" as const, color: "bg-green-100 text-green-700" },
+                  { label: "Related", key: "related" as const, color: "bg-purple-100 text-purple-700" },
+                ].map((group) => {
+                  const items = result.keyword_suggestions?.[group.key];
+                  if (!items || items.length === 0) return null;
+                  return (
+                    <div key={group.key}>
+                      <p className="text-xs font-medium text-[var(--muted-foreground)] mb-2">
+                        {group.label}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {items.map((kw) => (
+                          <span key={kw} className={`rounded-full px-2.5 py-0.5 text-xs ${group.color}`}>
+                            {kw}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Quality Score */}
+          {result.quality_score && (
+            <div className="rounded-xl border border-[var(--border)] p-6">
+              <h2 className="text-sm font-semibold text-[var(--muted-foreground)] mb-4">
+                Listing Quality Score
+              </h2>
+              <div className="flex items-center gap-4 mb-4">
+                <div className="relative flex h-16 w-16 items-center justify-center rounded-full border-4 border-[var(--primary)]">
+                  <span className="text-xl font-bold">{result.quality_score.overall}</span>
+                </div>
+                <div>
+                  <p className="text-sm font-medium">
+                    {result.quality_score.overall >= 80 ? "Great" : result.quality_score.overall >= 60 ? "Good" : "Needs Work"}
+                  </p>
+                  <p className="text-xs text-[var(--muted-foreground)]">
+                    Based on title, bullets, description, and keywords
+                  </p>
+                </div>
+              </div>
+              <div className="space-y-2">
+                {([
+                  { label: "Title", key: "title" as const },
+                  { label: "Bullet Points", key: "bullets" as const },
+                  { label: "Description", key: "description" as const },
+                  { label: "Keywords", key: "keywords" as const },
+                ]).map((item) => {
+                  const score = result.quality_score?.[item.key] ?? 0;
+                  return (
+                    <div key={item.key} className="flex items-center gap-3">
+                      <span className="w-24 text-xs text-[var(--muted-foreground)]">{item.label}</span>
+                      <div className="flex-1 h-2 rounded-full bg-[var(--secondary)] overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-[var(--primary)] transition-all"
+                          style={{ width: `${score}%` }}
+                        />
+                      </div>
+                      <span className="w-8 text-right text-xs font-medium">{score}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
           {/* Feedback */}
           <div className="flex items-center justify-center gap-4 py-2">
             <span className="text-xs text-[var(--muted-foreground)]">Was this helpful?</span>

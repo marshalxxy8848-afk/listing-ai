@@ -14,16 +14,16 @@ const features = [
     desc: "See your listing being written in real-time. No waiting — results appear as the AI creates them.",
   },
   {
-    title: "One-Click Copy",
-    desc: "Copy title, bullet points, description, or keywords individually. Ready to paste into your seller dashboard.",
+    title: "Keyword Suggestions & Quality Score",
+    desc: "Get 20+ keyword suggestions grouped by search intent. See your listing's quality score with breakdown.",
   },
   {
     title: "Generation History",
     desc: "All your past listings are saved. Browse, search, and reuse them anytime.",
   },
   {
-    title: "10 Free Credits",
-    desc: "Start with 10 free generations. No credit card required. Upgrade when you need more.",
+    title: "Batch Generation",
+    desc: "Generate up to 10 listings at once. Paste multiple products and get results in a single batch.",
   },
 ];
 
@@ -67,7 +67,7 @@ export default function LandingPage() {
             <div className="text-center"><div className="text-2xl font-bold">10</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Free Credits</div></div>
             <div className="text-center"><div className="text-2xl font-bold">6</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Platforms</div></div>
             <div className="text-center"><div className="text-2xl font-bold">~5s</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Generation</div></div>
-            <div className="text-center"><div className="text-2xl font-bold">1</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Click Copy</div></div>
+            <div className="text-center"><div className="text-2xl font-bold">20+</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Keywords</div></div>
           </div>
         </div>
       </section>
@@ -137,6 +137,8 @@ export default function LandingPage() {
                   { label: "Time per Listing", us: "~5 seconds", manual: "30-60 minutes", amazon: "10-15 minutes" },
                   { label: "Shopify / eBay Support", us: "✅ Yes", manual: "✅ Yes", amazon: "❌ No" },
                   { label: "AliExpress / Temu / TikTok", us: "✅ Yes", manual: "✅ Yes", amazon: "❌ No" },
+                  { label: "Batch Generation", us: "✅ Up to 10 at once", manual: "❌ One at a time", amazon: "❌ One at a time" },
+                  { label: "Keyword Suggestions", us: "✅ Intent-grouped", manual: "❌ Manual research", amazon: "✅ Basic" },
                   { label: "Free to Start", us: "✅ 10 free credits", manual: "✅ Yes", amazon: "✅ Yes" },
                 ].map((row, i) => (
                   <tr key={row.label} className={i < 5 ? "border-b" : ""}>
@@ -163,7 +165,8 @@ export default function LandingPage() {
               { q: "Do I need to speak English to use ListingAI?", a: "No. Enter your product details in Chinese, and our AI generates professional English listings automatically." },
               { q: "Which platforms do you support?", a: "Amazon, Shopify, Temu, and TikTok Shop. Each listing is tailored to the platform's specific format and style." },
               { q: "Is it really free?", a: "Yes, you get 10 free generations when you sign up. No credit card required." },
-              { q: "How accurate is the AI-generated listing?", a: "The AI is trained on successful cross-border listing patterns. You can review and edit the output before publishing." },
+              { q: "Do you offer keyword suggestions?", a: "Yes. Each generation includes 20+ keyword suggestions grouped by search intent (high volume, long tail, related) to help you optimize your listing for search." },
+              { q: "Can I generate multiple listings at once?", a: "Yes, use the Batch Generate feature to create up to 10 listings at a time. Just paste your products and let the AI do the rest." },
               { q: "Can I use my own API key?", a: "Not yet, but we're working on it for the Pro and Unlimited plans." },
             ].map((faq) => (
               <details key={faq.q} className="group rounded-xl border bg-[var(--background)]">
