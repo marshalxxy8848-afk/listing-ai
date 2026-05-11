@@ -73,7 +73,7 @@ export default function GenerationDetailPage() {
   if (!gen) return null;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 stagger-children">
       <div>
         <button
           onClick={() => router.push("/dashboard/generations")}

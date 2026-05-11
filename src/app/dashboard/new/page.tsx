@@ -357,7 +357,7 @@ export default function NewGenerationPage() {
 
       {/* Result */}
       {result && (
-        <div className="space-y-6">
+        <div className="space-y-6 stagger-children">
           {/* Title */}
           <div className="rounded-xl border border-[var(--border)] p-6">
             <div className="flex items-center justify-between mb-3">
