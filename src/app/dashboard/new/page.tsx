@@ -418,6 +418,31 @@ export default function NewGenerationPage() {
             </div>
           </div>
 
+          {/* Feedback */}
+          <div className="flex items-center justify-center gap-4 py-2">
+            <span className="text-xs text-[var(--muted-foreground)]">Was this helpful?</span>
+            <div className="flex gap-1">
+              <button
+                onClick={async () => {
+                  toast.success("Thanks for your feedback!");
+                }}
+                className="rounded-lg p-1.5 text-[var(--muted-foreground)] hover:text-green-500 hover:bg-green-500/10 transition-colors"
+                title="Helpful"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 9V5a3 3 0 00-3-3l-4 9v11h11.28a2 2 0 002-1.7l1.38-9a2 2 0 00-2-2.3zM7 22H4a2 2 0 01-2-2v-7a2 2 0 012-2h3" /></svg>
+              </button>
+              <button
+                onClick={async () => {
+                  toast.success("Thanks for your feedback!");
+                }}
+                className="rounded-lg p-1.5 text-[var(--muted-foreground)] hover:text-red-500 hover:bg-red-500/10 transition-colors"
+                title="Not helpful"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10 15v4a3 3 0 003 3l4-9V2H5.72a2 2 0 00-2 1.7l-1.38 9a2 2 0 002 2.3zm7-13h2.67A2.31 2.31 0 0122 4v7a2.31 2.31 0 01-2.33 2H17" /></svg>
+              </button>
+            </div>
+          </div>
+
           {/* Generate Another */}
           <button
             onClick={() => {

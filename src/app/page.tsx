@@ -89,6 +89,29 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Use Cases */}
+      <section className="border-t py-16 sm:py-24">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold">Who Is It For</h2>
+            <p className="mt-3 text-sm text-[var(--muted-foreground)]">Built for cross-border sellers who struggle with listing translations.</p>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-3 max-w-3xl mx-auto text-center">
+            {[
+              { emoji: "🇨🇳", title: "Chinese Sellers", desc: "Have Chinese product info but need English Amazon listings? Our AI handles the translation and optimization for you." },
+              { emoji: "🌏", title: "Cross-Border Teams", desc: "Managing products from Chinese factories? Generate consistent English listings across your entire catalog." },
+              { emoji: "🛒", title: "Shopify Store Owners", desc: "Starting a Shopify store with Chinese suppliers? Turn factory spec sheets into conversion-focused product pages." },
+            ].map((u) => (
+              <div key={u.title} className="rounded-xl border p-6 card-hover">
+                <div className="text-3xl mb-3">{u.emoji}</div>
+                <h3 className="font-semibold text-sm">{u.title}</h3>
+                <p className="mt-2 text-sm text-[var(--muted-foreground)] leading-relaxed">{u.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section className="border-t py-16 sm:py-24 bg-[var(--secondary)]/50">
         <div className="mx-auto max-w-6xl px-6">
@@ -98,9 +121,9 @@ export default function LandingPage() {
           </div>
           <div className="grid gap-6 md:grid-cols-3 max-w-4xl mx-auto">
             {[
-              { n: "01", title: "Enter Product Info", desc: "Type your product name and key features in Chinese. No English needed on your end." },
-              { n: "02", title: "AI Generates", desc: "Our AI creates an Amazon or Shopify optimized listing with title, bullets, description, and keywords." },
-              { n: "03", title: "Copy & Sell", desc: "Review the result, copy what you need with one click, and publish to your store." },
+              { n: "01", title: "Paste Product Info", desc: "Type your product name and key features in Chinese. No English needed on your end." },
+              { n: "02", title: "AI Generates Listing", desc: "Our AI creates an Amazon or Shopify optimized listing with title, bullets, description, and keywords." },
+              { n: "03", title: "Copy & Publish", desc: "Review the result, copy any section with one click, and paste into your seller dashboard." },
             ].map((s) => (
               <div key={s.n} className="rounded-xl border bg-[var(--background)] p-6 card-hover text-center">
                 <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[var(--primary)] text-sm font-bold text-[var(--primary-foreground)]">{s.n}</span>
