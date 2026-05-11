@@ -1,11 +1,27 @@
 import type { Metadata } from "next";
 import { Toaster } from "sonner";
 import "./globals.css";
+
 export const metadata: Metadata = {
-  title: "ListingAI — AI-Powered Product Listings",
-  description: "Generate Amazon & Shopify product listings with AI. Enter Chinese, get professional English copy.",
+  title: {
+    default: "ListingAI — AI-Powered Product Listings for Amazon & Shopify",
+    template: "%s | ListingAI",
+  },
+  description:
+    "Generate professional Amazon & Shopify product listings with AI. Enter Chinese product info, get optimized English titles, bullet points, and descriptions in seconds.",
+  icons: {
+    icon: "/favicon.svg",
+  },
+  openGraph: {
+    title: "ListingAI — AI-Powered Product Listings",
+    description:
+      "Turn Chinese product info into professional English listings for Amazon & Shopify.",
+  },
 };
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className="min-h-screen antialiased">
