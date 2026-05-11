@@ -193,12 +193,6 @@ export default function NewGenerationPage() {
     abortRef.current?.abort();
   };
 
-  // Filter out markdown code fences from streaming display
-  const displayText = streamingText
-    .replace(/```json\n?/g, "")
-    .replace(/```\n?/g, "")
-    .trim();
-
   // Scroll to result when streaming
   useEffect(() => {
     if (streamingText && resultRef.current) {
@@ -317,15 +311,18 @@ export default function NewGenerationPage() {
         </div>
       )}
 
-      {/* Streaming output with cursor */}
+      {/* Generating indicator (no raw JSON shown) */}
       {streamingText && !result && !parseFailed && (
-        <div ref={resultRef} className="rounded-xl border border-[var(--border)] p-6">
-          <h2 className="mb-3 text-sm font-semibold text-[var(--muted-foreground)]">
-            Generating...
-          </h2>
-          <div className="whitespace-pre-wrap font-mono text-sm leading-relaxed break-all">
-            {displayText}
-            <span className="inline-block h-4 w-[2px] bg-[var(--primary)] ml-0.5 animate-pulse" />
+        <div ref={resultRef} className="rounded-xl border border-[var(--border)] p-8 text-center">
+          <div className="flex flex-col items-center gap-3">
+            <div className="flex gap-1">
+              <span className="h-2 w-2 rounded-full bg-[var(--primary)] animate-bounce" style={{ animationDelay: "0ms" }} />
+              <span className="h-2 w-2 rounded-full bg-[var(--primary)] animate-bounce" style={{ animationDelay: "150ms" }} />
+              <span className="h-2 w-2 rounded-full bg-[var(--primary)] animate-bounce" style={{ animationDelay: "300ms" }} />
+            </div>
+            <span className="text-sm text-[var(--muted-foreground)]">
+              Generating your listing...
+            </span>
           </div>
         </div>
       )}
