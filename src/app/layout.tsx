@@ -10,7 +10,9 @@ export const metadata: Metadata = {
   description:
     "Generate professional Amazon & Shopify product listings with AI. Enter Chinese product info, get optimized English titles, bullet points, and descriptions in seconds.",
   icons: {
-    icon: "/favicon.svg",
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
   },
   openGraph: {
     title: "ListingAI — AI-Powered Product Listings",
