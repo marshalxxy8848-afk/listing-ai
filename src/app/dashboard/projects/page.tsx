@@ -122,7 +122,7 @@ export default function ProjectsPage() {
             className="block w-full rounded-lg border border-[var(--border)] bg-transparent px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[var(--ring)]"
           />
           <div className="flex gap-2">
-            {(["amazon", "shopify"] as const).map((p) => (
+            {(["amazon", "shopify", "ebay", "aliexpress", "temu", "tiktok"] as const).map((p) => (
               <button
                 key={p}
                 type="button"

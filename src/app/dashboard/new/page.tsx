@@ -81,7 +81,7 @@ function UpgradeModal({
 export default function NewGenerationPage() {
   const [productName, setProductName] = useState("");
   const [features, setFeatures] = useState("");
-  const [platform, setPlatform] = useState<"amazon" | "shopify">("amazon");
+  const [platform, setPlatform] = useState<"amazon" | "shopify" | "ebay" | "aliexpress" | "temu" | "tiktok">("amazon");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GenerationResult | null>(null);
   const [streamingText, setStreamingText] = useState("");
@@ -217,7 +217,7 @@ export default function NewGenerationPage() {
         <div>
           <label className="block text-sm font-medium">Platform</label>
           <div className="mt-1 flex gap-2">
-            {(["amazon", "shopify"] as const).map((p) => (
+            {(["amazon", "shopify", "ebay", "aliexpress", "temu", "tiktok"] as const).map((p) => (
               <button
                 key={p}
                 type="button"

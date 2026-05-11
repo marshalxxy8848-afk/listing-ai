@@ -1,7 +1,9 @@
+export type Platform = "amazon" | "shopify" | "ebay" | "aliexpress" | "temu" | "tiktok";
+
 export interface GenerationInput {
   productName: string;
   features: string;
-  platform: "amazon" | "shopify";
+  platform: Platform;
 }
 export interface GenerationResult {
   title: string;

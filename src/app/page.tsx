@@ -3,11 +3,11 @@ import Link from "next/link";
 const features = [
   {
     title: "Chinese Input, English Output",
-    desc: "Type your product details in Chinese. Our AI generates professional English listings optimized for Amazon and Shopify.",
+    desc: "Type your product details in Chinese. Our AI generates professional English listings optimized for Amazon, Shopify, Temu, and TikTok Shop.",
   },
   {
-    title: "Amazon & Shopify Ready",
-    desc: "Each listing is tailored to the platform's style — keyword-rich for Amazon, conversion-focused for Shopify.",
+    title: "6 Platforms Supported",
+    desc: "Amazon, Shopify, eBay, AliExpress, Temu, and TikTok Shop. Each listing is tailored to the platform's unique style and requirements.",
   },
   {
     title: "Streaming Generation",
@@ -63,10 +63,11 @@ export default function LandingPage() {
               See Features
             </Link>
           </div>
-          <div className="mt-12 grid grid-cols-3 gap-8 max-w-lg mx-auto border-t pt-8">
+          <div className="mt-12 grid grid-cols-4 gap-6 max-w-xl mx-auto border-t pt-8">
             <div className="text-center"><div className="text-2xl font-bold">10</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Free Credits</div></div>
-            <div className="text-center"><div className="text-2xl font-bold">2</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Platforms</div></div>
+            <div className="text-center"><div className="text-2xl font-bold">6</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Platforms</div></div>
             <div className="text-center"><div className="text-2xl font-bold">~5s</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Generation</div></div>
+            <div className="text-center"><div className="text-2xl font-bold">1</div><div className="text-xs text-[var(--muted-foreground)] mt-1">Click Copy</div></div>
           </div>
         </div>
       </section>
@@ -100,7 +101,7 @@ export default function LandingPage() {
             {[
               { emoji: "🇨🇳", title: "Chinese Sellers", desc: "Have Chinese product info but need English Amazon listings? Our AI handles the translation and optimization for you." },
               { emoji: "🌏", title: "Cross-Border Teams", desc: "Managing products from Chinese factories? Generate consistent English listings across your entire catalog." },
-              { emoji: "🛒", title: "Shopify Store Owners", desc: "Starting a Shopify store with Chinese suppliers? Turn factory spec sheets into conversion-focused product pages." },
+              { emoji: "📱", title: "Temu & TikTok Sellers", desc: "Selling on Temu or TikTok Shop? Get mobile-optimized, trend-aware listings that convert in the fast-paced social commerce world." },
             ].map((u) => (
               <div key={u.title} className="rounded-xl border p-6 card-hover">
                 <div className="text-3xl mb-3">{u.emoji}</div>
@@ -112,8 +113,73 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* How It Works */}
+      {/* Why ListingAI */}
+      <section className="border-t py-16 sm:py-24">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold">Why ListingAI</h2>
+            <p className="mt-3 text-sm text-[var(--muted-foreground)]">Built for Chinese sellers who need English listings — fast.</p>
+          </div>
+          <div className="overflow-hidden rounded-xl border">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b bg-[var(--secondary)]">
+                  <th className="p-4 text-left font-medium"></th>
+                  <th className="p-4 text-center font-medium text-[var(--primary)]">ListingAI</th>
+                  <th className="p-4 text-center font-medium text-[var(--muted-foreground)]">Doing It Manually</th>
+                  <th className="p-4 text-center font-medium text-[var(--muted-foreground)]">Amazon AI Tool</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { label: "Chinese Input", us: "✅ Yes", manual: "❌ Must know English", amazon: "❌ English only" },
+                  { label: "Platforms", us: "✅ 6 platforms", manual: "❌ One at a time", amazon: "❌ Amazon only" },
+                  { label: "Time per Listing", us: "~5 seconds", manual: "30-60 minutes", amazon: "10-15 minutes" },
+                  { label: "Shopify / eBay Support", us: "✅ Yes", manual: "✅ Yes", amazon: "❌ No" },
+                  { label: "AliExpress / Temu / TikTok", us: "✅ Yes", manual: "✅ Yes", amazon: "❌ No" },
+                  { label: "Free to Start", us: "✅ 10 free credits", manual: "✅ Yes", amazon: "✅ Yes" },
+                ].map((row, i) => (
+                  <tr key={row.label} className={i < 5 ? "border-b" : ""}>
+                    <td className="p-4 font-medium">{row.label}</td>
+                    <td className="p-4 text-center text-green-600">{row.us}</td>
+                    <td className="p-4 text-center text-[var(--muted-foreground)]">{row.manual}</td>
+                    <td className="p-4 text-center text-[var(--muted-foreground)]">{row.amazon}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
       <section className="border-t py-16 sm:py-24 bg-[var(--secondary)]/50">
+        <div className="mx-auto max-w-3xl px-6">
+          <div className="text-center max-w-xl mx-auto mb-12">
+            <h2 className="text-2xl sm:text-3xl font-bold">Frequently Asked Questions</h2>
+          </div>
+          <div className="space-y-3">
+            {[
+              { q: "Do I need to speak English to use ListingAI?", a: "No. Enter your product details in Chinese, and our AI generates professional English listings automatically." },
+              { q: "Which platforms do you support?", a: "Amazon, Shopify, Temu, and TikTok Shop. Each listing is tailored to the platform's specific format and style." },
+              { q: "Is it really free?", a: "Yes, you get 10 free generations when you sign up. No credit card required." },
+              { q: "How accurate is the AI-generated listing?", a: "The AI is trained on successful cross-border listing patterns. You can review and edit the output before publishing." },
+              { q: "Can I use my own API key?", a: "Not yet, but we're working on it for the Pro and Unlimited plans." },
+            ].map((faq) => (
+              <details key={faq.q} className="group rounded-xl border bg-[var(--background)]">
+                <summary className="flex cursor-pointer items-center justify-between p-4 text-sm font-medium">
+                  {faq.q}
+                  <svg className="h-4 w-4 shrink-0 transition-transform group-open:rotate-180" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="6 9 12 15 18 9" /></svg>
+                </summary>
+                <p className="border-t px-4 py-3 text-sm text-[var(--muted-foreground)] leading-relaxed">{faq.a}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works */}
+      <section className="border-t py-16 sm:py-24">
         <div className="mx-auto max-w-6xl px-6">
           <div className="text-center max-w-xl mx-auto mb-12">
             <h2 className="text-2xl sm:text-3xl font-bold">How It Works</h2>
